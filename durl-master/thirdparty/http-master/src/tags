@@ -1,0 +1,40 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BUF_SIZE	connect.h	11;"	d
+CONNECT_H	connect.h	2;"	d
+DEFAULT_PORT	url.h	10;"	d
+RECV_SIZE	connect.h	10;"	d
+URL_H	url.h	2;"	d
+URL_PATH_BUFFER_SIZE	url.h	9;"	d
+Url	url.h	/^typedef struct Url {$/;"	s
+Url	url.h	/^} Url;$/;"	t	typeref:struct:Url
+__dbg_h	dbg.h	2;"	d
+build_request	connect.c	/^build_request(char *hostname, char *request_path)$/;"	f
+debug	dbg.h	7;"	d
+debug	dbg.h	9;"	d
+error_unless	dbg.h	13;"	d
+fetch_response	connect.c	/^fetch_response(int sockfd, Buffer **response, int recv_size)$/;"	f
+fragment	url.h	/^    char *fragment;$/;"	m	struct:Url
+hostname	url.h	/^    char *hostname;$/;"	m	struct:Url
+init_connection	connect.c	/^init_connection(char *hostname, char *port, struct addrinfo **res)$/;"	f
+jump_unless	dbg.h	12;"	d
+length_of	url.c	/^length_of(UriTextRangeA *part)$/;"	f
+main	http.c	/^main(int argc, char *argv[])$/;"	f
+make_connection	connect.c	/^make_connection(struct addrinfo *res)$/;"	f
+make_request	connect.c	/^make_request(int sockfd, char *hostname, char *request_path)$/;"	f
+path	url.h	/^    char *path;$/;"	m	struct:Url
+port	url.h	/^    char *port;$/;"	m	struct:Url
+query	url.h	/^    char *query;$/;"	m	struct:Url
+scheme	url.h	/^    char *scheme;$/;"	m	struct:Url
+uri_fetch_part	url.c	/^uri_fetch_part(UriTextRangeA *part)$/;"	f
+uri_fetch_path	url.c	/^uri_fetch_path(UriUriA *uri)$/;"	f
+uri_fetch_port	url.c	/^uri_fetch_port(UriTextRangeA *part)$/;"	f
+uri_parse	url.c	/^uri_parse(char *url)$/;"	f
+url_check	url.c	/^url_check(Url *url)$/;"	f
+url_free	url.c	/^url_free(Url *url)$/;"	f
+url_free_part	url.h	12;"	d
+url_parse	url.c	/^url_parse(char *url_to_parse)$/;"	f
