@@ -1,28 +1,19 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
-#define V_SIZE 6
+#define MAXSIZE 60
 
-int is_empty(int *array)
+void dijkstra(int graph[][6], int size, int start)
 {
-	for(int i = 0; i < V_SIZE; i++)
-	{
-		if(array[i] != 0)
-			return 0;
-	}
+	int visit[MAXSIZE] = {0};
+	int parent[MAXSIZE] = {0};
+	int frontier[MAXSIZE] = {0};
+	int next[MAXSIZE] = {0};
+	int dist[MAXSIZE] = {0};
+	bool is_empty = false;
 
-	return 1;
-}
-
-void dijkstra(int graph[][V_SIZE], int start)
-{
-	int visit[V_SIZE] = {0};
-	int parent[V_SIZE] = {0};
-	int frontier[V_SIZE] = {0};
-	int next[V_SIZE] = {0};
-	int dist[V_SIZE] = {0};
-
-	for(int i = 0; i < V_SIZE; i++)
+	for(int i = 0; i < size; i++)
 	{
 		dist[i] = 1000;
 	}
@@ -30,21 +21,25 @@ void dijkstra(int graph[][V_SIZE], int start)
 	frontier[start] = 1;
 	parent[start] = start;
 	dist[start] = 0;
-	while(!is_empty(frontier))
+	while(!is_empty)
 	{
-		for(int i = 0; i < V_SIZE; i++)
+		is_empty = true;
+		memset(next, 0, sizeof(next));
+		for(int i = 0; i < size; i++)
 		{
 			if(frontier[i] == 0)
 				continue;
 
-			memset(next, 0, sizeof(next));
-			for(int j = 0;  j < V_SIZE; j++)
+			for(int j = 0;  j < size; j++)
 			{
 				if(graph[i][j] == -1 && graph[i][j] != 0)
 					continue;
 
 				if(visit[j] != 1)
+				{
+					is_empty = false;
 					next[j] = 1;
+				}
 
 				if(dist[j] > graph[i][j] + dist[i])
 				{
@@ -57,13 +52,13 @@ void dijkstra(int graph[][V_SIZE], int start)
 		memcpy(frontier, next, sizeof(frontier));
 	}
 
-	for(int i = 0; i < V_SIZE; i++)
+	for(int i = 0; i < size; i++)
 		printf("%d %d %d\n", i, dist[i], parent[i]);
 }
 
-int main()
+void test_suite1()
 {
-	int W[V_SIZE][V_SIZE] = {
+	int W[][6] = {
 		{ 0, 1, 4, -1, -1 ,-1 },
 		{ 1, 0, 2, 7, 5, -1 },
 		{ 4, 2, 0, -1, 1, -1 },
@@ -71,5 +66,24 @@ int main()
 		{ -1, 5, 1, 3, 0, 6 },
 		{ -1, -1, -1, 2, 6, 0 }
 	};
-	dijkstra(W, 0);
+	dijkstra(W, 6, 0);
+}
+
+void test_suite2()
+{
+	int W[][6] = {
+		{ 0, 1, 4, -1, -1 ,-1 },
+		{ 1, 0, 2, 7, 5, -1 },
+		{ 4, 2, 0, -1, 1, -1 },
+		{ -1, 7, -1, 0, 3, 2 },
+		{ -1, 5, 1, 3, 0, 6 },
+		{ -1, -1, -1, 2, 6, 0 }
+	};
+	dijkstra(W, 6, 0);
+}
+
+int main()
+{
+	test_suite1();
+	test_suite2();
 }

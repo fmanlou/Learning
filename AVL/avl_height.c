@@ -196,83 +196,67 @@ avl_tree_insert(avl_tree_node *root, int value)
     return NULL;
 }
 
-static inline void
-avl_replace_child(avl_tree_node *old_child, avl_tree_node *new_child)
-{
-    avl_tree_node *parent = old_child->parent;
-    avl_tree_node *left = old_child->left;
-    avl_tree_node *right = old_child->right;
-
-    old_child->left = NULL;
-    old_child->right = NULL;
-    old_child->parent = NULL;
-
-    if(parent != NULL)
-    {
-        if(old_child == parent->left)
-            parent->left = new_child;
-        else
-            parent->right = new_child;
-    }
-
-    if(left != NULL)
-        left->parent = new_child;
-    if(right != NULL)
-        right->parent = new_child;
-
-    if(new_child != NULL)
-    {
-        new_child->left = left;
-        new_child->right = right;
-        new_child->parent = parent;
-    }
-}
-
 void 
-avl_tree_rebalance_after_remove(avl_tree_node *root, avl_tree_node *removed)
+avl_tree_rebalance_after_remove(avl_tree_node *root, avl_tree_node *node)
 {
 
-}
-
-/* Swaps node X, which must have 2 children */
-static avl_tree_node *
-avl_tree_swap_with_successor(avl_tree_node *node)
-{
-    avl_tree_node *successor, *ret;
-
-    successor = node->right;
-    while(successor->left != NULL)
-        successor = successor->left;
-
-    if(successor->parent->right != NULL)
-    {
-        if(successor->parent->right->height == successor->height)
-            ret = NULL;
-        else
-            ret = (successor->parent == node) ? node : successor->parent;
-    }
-
-    if(successor->right != NULL)
-    {
-        successor->right->parent = successor->parent;
-        successor->parent->left = successor->right;
-    }
-
-    avl_replace_child(node, successor); 
-    return ret;
 }
 
 void
-avl_tree_remove(avl_tree_node *node)
+avl_tree_remove(avl_tree_node *root, avl_tree_node *node)
 {
-    avl_tree_node *parent;    
-    if(node->left == NULL && node->right == NULL)
-    {
-        parent = avl_tree_swap_with_successor(node);
-    }
-    else
-    {
-        avl_tree_node *child = node->left ? node->left : node->right;
-        avl_replace_child(node, child);
-    }
+    avl_tree_node *successor;
+
+	if(node->right == NULL)
+	{
+		successor = node->left;
+	}
+	else
+	{
+		successor = node->right;
+		while(successor->left != NULL)
+			successor = successor->left;
+		if(successor->right != NULL)
+		{
+			if(successor == successor->parent->left)
+				successor->parent->left = successor->right;
+			else
+				successor->parent->right = successor->right;
+
+			successor->right->parent = successor->parent;
+			successor->right->left = successor;
+			successor->parent = successor->right;
+			successor->right = NULL;
+		}
+	}
+
+	if(successor == NULL)
+	{
+		free(node);
+		return;
+	}
+
+	/* replace node with successor */
+	if(node->parent != NULL)
+	{
+		if(node == node->parent->left)
+			node->parent->left = successor;
+		else
+			node->parent->right = successor;
+	}
+
+	if(successor->parent != NULL)
+	{
+		if(successor == successor->parent->left)
+			successor->parent->left = NULL;
+		else
+			successor->parent->right = NULL;
+		
+	}
+	successor->parent = node->parent;
+	successor->left = node->left;
+	successor->right = node->right;
+	successor->height = node->height;
+
+	avl_tree_rebalance_after_remove(root, parent);
 }
